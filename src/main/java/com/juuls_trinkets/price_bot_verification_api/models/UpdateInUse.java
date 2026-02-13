@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public class UpdateInUse {
     public UUID id;
-    public boolean inUse;
+    public boolean in_use;
 }

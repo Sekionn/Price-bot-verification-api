@@ -30,7 +30,7 @@ public class ShopDaoImpl implements ShopDao{
     @Override
     public Optional<SimpleShop> findById(UUID id) {
         SimpleShopMapper mapper = new SimpleShopMapper();
-        String sql = "SELECT id, name, owner, in_use FROM users WHERE id = :id";
+        String sql = "SELECT id, name, owner, in_use, email FROM users WHERE id = :id";
         try {
             SimpleShop shop = template.queryForObject(
                 sql,
@@ -101,7 +101,7 @@ public class ShopDaoImpl implements ShopDao{
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
             .addValue("id", update.id)
-            .addValue("in_use", update.inUse);
+            .addValue("in_use", update.in_use);
 
         return template.update(sql,param, holder);
 	}
