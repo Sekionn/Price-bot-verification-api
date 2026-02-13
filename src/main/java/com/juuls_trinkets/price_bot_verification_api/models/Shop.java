@@ -19,17 +19,19 @@ public class Shop {
     public String Salt;
     public String VerificationId;
     public boolean InUse;
+    public String Email;
 
-    public Shop(UUID id, String name, String owner, String verificationId, boolean inUse)
+    public Shop(UUID id, String name, String owner, String verificationId, boolean inUse, String email)
     {
         Id = id;
         Name = name;
         Owner = owner;
         VerificationId = verificationId;
         InUse = inUse;
+        Email = email;
     }
 
-    public Shop(UUID id, String name, String owner, String salt, String verificationId, boolean inUse)
+    public Shop(UUID id, String name, String owner, String salt, String verificationId, boolean inUse, String email)
     {
         Id = id;
         Name = name;
@@ -37,5 +39,6 @@ public class Shop {
         Salt = salt;
         VerificationId = verificationId;
         InUse = inUse;
+        Email = email;
     }
 }

@@ -1,5 +1,6 @@
 package com.juuls_trinkets.price_bot_verification_api.Services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,17 +24,21 @@ public class ShopService {
     @Autowired
     ShopDaoImpl shopRepository;
 
-	public boolean ShopIsVerified(VerificationInformation info) {
-		Optional<Shop> optionalShop = shopRepository.findByIdExtended(info.id);
-		if (optionalShop.isEmpty()) {
-			throw new RuntimeException("No shop was found by this id");
+	public UUID ShopIsVerified(VerificationInformation info) {
+		List<Shop> shops = shopRepository.findByEmail(info.email);
+		if (shops.isEmpty()) {
+			throw new RuntimeException("No shop was found by this email");
 		}
 		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-		Shop shop = optionalShop.get();
-		String saltedId = info.key.toString() + shop.Salt;
+		for (Shop shop : shops) {
+			String saltedId = info.key.toString() + shop.Salt;
+			if (passwordEncoder.matches(saltedId, shop.VerificationId)) {
+				return shop.Id;
+			}
+		}
 		
-		return passwordEncoder.matches(saltedId, shop.VerificationId);
+		throw new RuntimeException("No shop was found by this email");
 	}
 
 	public boolean IsShopInUse(UUID id) {
@@ -57,7 +62,7 @@ public class ShopService {
 		Shop shop = shopDto.createShop(salt, encodedId);
 		shopRepository.insertShop(shop);
 
-        return new VerificationInformation(shop.Id, key);
+        return new VerificationInformation(shop.Email, key);
 	}
 
 	public int updateInUse(UpdateInUse update) {

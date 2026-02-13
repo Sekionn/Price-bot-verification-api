@@ -14,7 +14,8 @@ public class SimpleShopMapper implements RowMapper<SimpleShop> {
             result.getObject("id", java.util.UUID.class),
             result.getString("name"),
             result.getString("owner"),
-            result.getBoolean("in_use")
+            result.getBoolean("in_use"),
+            result.getString("email")
         );
 
         return Shop;
