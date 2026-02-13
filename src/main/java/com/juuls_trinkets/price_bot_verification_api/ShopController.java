@@ -23,7 +23,7 @@ public class ShopController {
     ShopService ShopService;
 
     @PostMapping("/verified")
-    boolean ShopIsVerified(@RequestBody VerificationInformation info){
+    UUID ShopIsVerified(@RequestBody VerificationInformation info){
 
         return ShopService.ShopIsVerified(info);
     }

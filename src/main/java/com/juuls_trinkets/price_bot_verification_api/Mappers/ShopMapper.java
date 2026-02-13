@@ -16,7 +16,8 @@ public class ShopMapper implements RowMapper<Shop> {
             result.getString("owner"),
             result.getString("salt"),
             result.getString("verification_id"),
-            result.getBoolean("in_use")
+            result.getBoolean("in_use"),
+            result.getString("email")
         );
 
         return Shop;

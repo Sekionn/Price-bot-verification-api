@@ -1,6 +1,7 @@
 package com.juuls_trinkets.price_bot_verification_api.Repository;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -58,9 +59,28 @@ public class ShopDaoImpl implements ShopDao{
         }
     }
 
+    @Override
+    public List<Shop> findByEmail(String email) {
+
+        return template.query("select * from users", new ShopMapper());
+
+        // ShopMapper mapper = new ShopMapper();
+        // String sql = "SELECT * FROM users WHERE email = :email";
+        // try {
+        //     Shop shop = template.query(
+        //         sql,
+        //         Collections.singletonMap("email", email),
+        //         (rs, rowNum) -> mapper.mapRow(rs, 1)
+        //     );
+        //     return Optional.of(shop);
+        // } catch (EmptyResultDataAccessException e) {
+        //     throw e;
+        // }
+    }
+
 	@Override
 	public int insertShop(Shop shop) {
-		final String sql = "insert into users(id, name, owner, salt, verification_id, in_use) values(:Id,:Name,:Owner,:Salt,:VerificationId,:InUse)";
+		final String sql = "insert into users(id, name, owner, salt, verification_id, in_use, email) values(:Id,:Name,:Owner,:Salt,:VerificationId,:InUse,:email)";
 
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
@@ -69,8 +89,8 @@ public class ShopDaoImpl implements ShopDao{
             .addValue("Owner", shop.Owner)
             .addValue("Salt", shop.Salt)
             .addValue("VerificationId", shop.VerificationId)
-            .addValue("InUse", shop.InUse);
-
+            .addValue("InUse", shop.InUse)
+            .addValue("email", shop.Email);
         return template.update(sql,param, holder);
 	}
 
